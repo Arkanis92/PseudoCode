@@ -1,0 +1,98 @@
+1. Why do programmers use pseudocode?
+
+It helps programmers develop algorithms through brainstorming and writing tasks in a way a human would understand rather than in a way the computer would understand.
+
+2. If you run pseudocode on your computer what would happen?
+
+Pseudocode is not an official computer language, therefore nothing would happen. It is used to help the programmer understand the steps and tasks that need to be done rather than using actual code.
+
+
+
+
+Write the following algorithms in pseudocode:
+
+1. Create a function that takes two numbers and prints out the greater number.
+
+INPUT first number
+INPUT second number
+IF the first number is greater than the second number THEN
+  PRINT the first number
+ELSE IF the second number is greater than the first number THEN
+  PRINT the second number
+ELSE
+  PRINT "the numbers are equal."
+END IF
+
+2. Create a function that prints out the number from 1 to 100.
+
+INIT number = 1
+FOR number to 100
+  PRINT number
+END FOR
+
+3. Create a function that searches for a specific entry in a phonebook
+
+Use a binary search as it's faster than a linear but requires the array to be sorted
+
+INPUT phonebook array
+INPUT target entry
+
+SET left bound to 0
+SET right bound to the length of the phonebook array
+
+WHILE the left bound is less than or equal to the right bound
+  SET middle bound to left bound plus the left bound minus the right bound divided by two
+  IF the array entry at the middle bound is strictly equal to the target entry THEN
+    PRINT the middle bound
+  ELSE IF the array entry at the middle bound is less than the target entry THEN
+    SET left bound equal to middle bound plus 1
+  ELSE
+    SET right bound equal to middle bound minus 1
+  END IF
+  PRINT "Target not found"
+END WHILE
+
+4. Using the pseudocode you wrote for the previous question, implement it in any computer language of your choice.
+
+//Question 1 Code//
+
+function greaterNumber(a, b) {
+  if ( a > b ) {
+    console.log(a);
+  }
+  else if ( b > a ) {
+    console.log(b);
+  } else {
+    console.log('The numbers are equal');
+  }
+}
+
+//Question 2 Code//
+
+function oneToOneHundred(e) {
+  for ( i = 1 ; i <= 100 ; i++ ) {
+    console.log(i);
+  }
+}
+
+//Question 3 Code//
+
+function phoneBookSearch(arr, target) {
+  let left = 0;
+  let right = arr.length - 1;
+  while ( left <= right ) {
+    const middle = left + Math.floor( ( right - left ) / 2 );
+    if ( arr[middle] === target ) {
+      return middle;
+    }
+    else if ( arr[middle] < target ) {
+      left = middle + 1;
+    } else {
+      right = middle - 1;
+    }
+  }
+  return "Target Not Found"
+}
+
+const test = [1,2,5,6,9,11,22,33,44,55,66,77,89,99,111,222];
+console.log(phoneBookSearch(test, 22)); //should return 6
