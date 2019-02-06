@@ -1,0 +1,119 @@
+1. In your own words, explain what clean code is and why it is important.
+
+Clean code is a principle that any developer should strive for. Clean code is code that is simple, easy to read, and easy to maintain. This becomes especially important on large and complex projects where messy or overly complex code can easily lead to problems later on.
+
+2. Read this article about Toyota and their use of bad code. Although you may not yet understand all of the topics discussed, think about another commonly used object that relies on computers and explain what would happen if the code was not created to an acceptable standard.
+
+Airplanes rely heavily on their computer system to give the pilots the information they need to properly fly. If the code was badly written, there could be a whole host of problems including incorrect altitude, speed, pitch, etc. readings, which would likely put all passengers and crew on board in risk.
+A significant number of crashes or other disasters involving airplanes has involved a faulty component, including the computer system.
+
+3. Would you consider the following to be clean code? Explain why or why not. If not, refactor the code.
+
+No, the first thing I would do is separate the Fahrenheit and Celsius sections of the code to two separate methods. I would also try to write the code in a way that minimizes the need of comments
+
+FUNCTION convertTemperature(degrees, type)
+  IF type = F THEN
+    CALL fahrenheitToCelsius
+  ELSE IF type = C THEN
+    CALL celsiusToFahrenheit
+  END IF
+END FUNCTION
+
+FUNCTION fahrenheitToCelsius(degrees)
+  SET convertDegrees = (degrees - 32) * (5/9)
+  RETURN convertDegrees
+END FUNCTION
+
+FUNCTION celsiusToFahrenheit(degrees)
+  SET convertDegrees = degrees * 1.8 + 32
+  RETURN convertDegrees
+END FUNCTION
+
+4. Would you consider the following to be clean code? Explain why or why not. If not, refactor the code.
+
+This code looks clean. It doesn't nest more than 2 steps and everything makes sense without needing comments. The only thing I might change is changing the function name to calculatePercent.
+
+5. Using pseudocode, refactor the code for the following examples using the principles you have learned in this checkpoint.
+A. The following function prints the subtotal of a customer's transaction and receives payment accordingly.
+
+FUNCTION checkOut(subTotal, discountRate, paymentType)
+  SET totalDiscountTax = subTotal * discountRate + (subTotal * tax)
+  PRINT "Your total due is: " + totalDiscountTax
+  IF paymentType = 'CASH' THEN
+    CALL getPayment RETURNING amount
+    PRINT "Change due: " + amount - totalDiscountTax
+  ELSE
+    PRINT "Your credit card has been charged: " + totalDiscountTax
+  END IF
+END FUNCTION
+
+B. The following function checks out a book if there are no issues with the guest's account.
+
+FUNCTION checkOutBook(book, guest)
+  IF guest.accountActive AND guest.outstandingFees = 0 AND NOT guest.hasOverdueBooks THEN
+    APPEND book TO guest.books
+    SET book.status to "Checked Out"
+    PRINT "Your books have been issued"
+  ELSE
+    PRINT "Unable to check out book."
+  END IF
+END FUNCTION
+
+C. The following class is a code snippet that should support the transactions a customer can perform at an ATM.
+
+CLASS bankAccount
+  FUNCTION displayBalance
+    PRINT balance
+  END FUNCTION
+
+  FUNCTION deposit(amount)
+    SET balance to balance + amount
+  END FUNCTION
+
+  FUNCTION withdraw(amount)
+    IF balance > amount THEN
+      SET balance to balance - amount
+    END IF
+  END FUNCTION
+END CLASS
+
+
+CLASS offers
+  FUNCTION checkStatus
+    IF NOT customer.hasCheckingAccount THEN
+      CALL offerCheckingAccount
+    END IF
+  END FUNCTION
+
+  FUNCTION creditCardOffer
+    IF NOT customer.hasCreditCard THEN
+      CALL offerCreditCard
+    END IF
+  END FUNCTION
+END CLASS
+
+6. Square Given an array of integers, find out whether the sum of the integers is a perfect square. If it is a perfect square, return the square root, otherwise return the sum.
+
+function square (array) {
+  return Math.sqrt(arraySum(array));
+}
+
+function arraySum(array) {
+  return array.reduce( function(a,b) {
+    return a + b
+  }, 0)
+}
+
+7. Duplicate Given an array of integers, find out whether the array contains any duplicate elements. The function should return true if any value appears at least twice in the array, and false if every element is distinct.
+
+function duplicateCheck(array) {
+  let count = [];
+  for ( let i = 0 ; i <= array.length ; i++ ) {
+    if ( count[a[i]] === undefined ) {
+      count[a[i]] = 1;
+    } else {
+      return true;
+    }
+  }
+  return false;
+}
