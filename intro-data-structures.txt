@@ -1,0 +1,43 @@
+1. A line of people at an amusement park ride.
+
+class parkRideLine {
+  function newPerson(arr, personName) {
+    return arr.push(personName);
+  }
+
+  function findPerson(arr, personName) {
+    for ( let i = 0 ; i <= arr.length ; i++ ) {
+      if ( personName === arr[i] ) {
+        return i + 1;
+      }
+    }
+    return "Person not found";
+  }
+
+  function cutLine(array, target, personName) {
+    let linePosition = findPerson(array, target);
+    if ( linePosition !== "Person not found" ){
+      return array.splice( linePosition, 0, personName );
+    } else {
+      return "Target person does not exist";
+    }
+  }
+
+  function leaveLine(arr, personName) {
+    let linePosition = findPerson(arr, personName);
+    if ( linePosition !== "Person not found" ){
+      return arr.splice(linePosition, 1);
+    } else {
+      return "Target person does not exist";
+    }
+  }
+}
+
+2. Provide another real-world example that you can model using a data structure.
+
+List of people on a bus.
+
+3. How would your data structure allow developers to access and manipulate the data?
+
+This would be similar to the park ride line. You could easily add new people to the bus for people who get on, as well as remove people from the bus as they get off.
+It would actually be a bit simpler as there is no "cutting" on a bus so all there would actually need to be would be a way to remove a person and add a person.
