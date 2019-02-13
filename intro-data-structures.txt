@@ -11,33 +11,36 @@ class parkRideLine {
         return i + 1;
       }
     }
-    return "Person not found";
+    return null;
   }
 
   function cutLine(array, target, personName) {
     let linePosition = findPerson(array, target);
-    if ( linePosition !== "Person not found" ){
-      return array.splice( linePosition, 0, personName );
+    if ( linePosition !== null ){
+      array.splice( linePosition, 0, personName );
+      return array;
     } else {
-      return "Target person does not exist";
+      return null;
     }
   }
 
   function leaveLine(arr, personName) {
     let linePosition = findPerson(arr, personName);
-    if ( linePosition !== "Person not found" ){
-      return arr.splice(linePosition, 1);
+    if ( linePosition !== null ){
+      arr.splice(linePosition, 1);
+      return arr;
     } else {
-      return "Target person does not exist";
+      return null;
     }
   }
 }
 
 2. Provide another real-world example that you can model using a data structure.
 
-List of people on a bus.
+
+Prisoners on one floor of a jail block could be stored in an array based on which cells they're in.
 
 3. How would your data structure allow developers to access and manipulate the data?
 
-This would be similar to the park ride line. You could easily add new people to the bus for people who get on, as well as remove people from the bus as they get off.
-It would actually be a bit simpler as there is no "cutting" on a bus so all there would actually need to be would be a way to remove a person and add a person.
+The prisoners are stored in an array corresponding to their cell number (i.e. John Smith is in cell 1, so he'd be placed in index 0 of the array).
+Developers would be able to update who is in what cell based on their position in the array as well as utilize methods to delete, add, and replace prisoners as they come and go.
