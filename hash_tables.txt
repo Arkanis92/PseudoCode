@@ -1,0 +1,191 @@
+1. What is a hash table?
+
+A type of data structure that stores each value and links it to a name. The names are unique and can be used like an index in an array to look up a specific value.
+
+2. What is hashing?
+
+Hashing is the operation used to convert a string to a numerical index.
+
+3. How does a hash table store data?
+
+A name that is a string is input and linked with a value. The name is then converted to a number through the use of a hashing function.
+The hash code in and of itself would take too much memory in an array, so the hashing function then determines a true index by modding the output in relation to the array capacity.
+The value is then stored in the newly created index.
+
+4. How are hash tables and objects different?
+
+Hash tables are better in handling cases in which the name corresponds with a native object attribute and provides constant time lookup.
+Objects are better with a static number of values of different types.
+
+5. Determine whether you would use a hash table or an object to store each of the following pieces of data:
+A list of pets and their unique names.
+
+  Object - Pets have unique names and the list should be static
+
+
+The name, age, and the birthday of your best friend.
+
+  Object - all static information
+
+
+The name and location of every company in a given city.
+
+  Hash Table - name and location of every company in a city can change often
+
+
+All of the books checked out from a library by a particular individual.
+
+  Hash Table - Depends a bit on how often someone checked out books, but considering it's changing relatively quickly, a hash table might be more suitable.
+
+
+The primary and secondary phone numbers for a contact.
+
+  Object - Though these numbers might change occaisionally, phone numbers generally don't change very often.
+
+
+6. Build a system that allows a sales associate to enter a customer's name, address, and phone number into the system and look up customers using their phone numbers.
+Store this information in a hash table.
+
+function getHash (key, k) {
+  let hash = 0;
+  for ( let i = 0 ; i < key.length ; i++ ) {
+    hash += key.charAt(i);
+  }
+  return hash % k;
+};
+
+function hashTable () {
+  let storage = [];
+  let storageCap = 999;
+
+  this.add = function (name, address, phone) {
+    let index = getHash(phone, storageCap);
+
+    if ( storage[index] === undefined ) {
+      storage[index] = [ [name, address, phone] ];
+    }
+  };
+
+  this.find = function (phone) {
+    let index = getHash(phone, storageCap);
+
+    if ( storage[index] === undefined ) {
+      return null;
+    } else {
+      for ( let i = 0 ; i < storage[index].length ; i++ ) {
+        if ( storage[index][i][0] === phone ) {
+          return "Phone Number: " + storage[index][i][0] + " Address: " + storage[index][i][1] + " Name: " + storage[index][i][2];
+        } else {
+          return null;
+        }
+      }
+    }
+  };
+}
+
+7. Build a system that allows a store owner to track their store's inventory using a hash table for storage.
+
+function getHash (key, k) {
+  let hash = 0;
+  for ( let i = 0 ; i < key.length ; i++ ) {
+    hash += key.charAt(i);
+  }
+  return hash % k;
+};
+
+function hashTable () {
+  let inventory = [];
+  let inventoryCap = 999;
+
+  this.add = function (item, quantity) {
+    let index = getHash(item, inventoryCap);
+
+    if ( inventory[index] === undefined ) {
+      inventory[index] = [ [item, quantity] ];
+    }
+  };
+
+  this.find = function (item) {
+    let index = getHash(item, inventoryCap);
+
+    if ( inventory[index] === undefined ) {
+      return null;
+    } else {
+      for ( let i = 0 ; i < inventory[index].length ; i++ ) {
+        if ( inventory[index][i][0] === item ) {
+          return "Item Name: " + inventory[index][i][0] + " Quantity: " + inventory[index][i][1];
+        } else {
+          return null;
+        }
+      }
+    }
+  };
+}
+
+8. Build a system that allows digital copies of newspapers to be entered and searched by publisher and publication date. Use hash tables to store the necessary data.
+
+function getHash (key, k) {
+  let hash = 0;
+  for ( let i = 0 ; i < key.length ; i++ ) {
+    hash += key.charAt(i);
+  }
+  return hash % k;
+};
+
+function hashTablePublisher () {
+  let newspapers = [];
+  let newspapersCap = 999;
+
+  this.add = function (publisher, date, name) {
+    let index = getHash(publisher, newspapersCap);
+
+    if ( newspapers[index] === undefined ) {
+      newspapers[index] = [ [publisher, date, name] ];
+    }
+  };
+
+  this.find = function (publisher) {
+    let index = getHash(publisher, newspapersCap);
+
+    if ( newspaper[index] === undefined ) {
+      return null;
+    } else {
+      for ( let i = 0 ; i < newspapers[index].length ; i++ ) {
+        if ( newspapers[index][i][0] === publisher ) {
+          return "Publisher: " + newspapers[index][i][0] + " Date Published: " + newspapers[index][i][1] + " Name of Issue: " + newspapers[index][i][2];
+        } else {
+          return null;
+        }
+      }
+    }
+  };
+}
+
+function hashTableDate () {
+  let newspapers = [];
+  let newspapersCap = 999;
+
+  this.add = function (publisher, date, name) {
+    let index = getHash(date, newspapersCap);
+
+    if ( newspapers[index] === undefined ) {
+      newspapers[index] = [ [publisher, date, name] ];
+    }
+  };
+
+  this.find = function (date) {
+    let index = getHash(date, newspapersCap);
+
+    if ( newspaper[index] === undefined ) {
+      return null;
+    } else {
+      for ( let i = 0 ; i < newspapers[index].length ; i++ ) {
+        if ( newspapers[index][i][1] === date ) {
+          return "Publisher: " + newspapers[index][i][0] + " Date Published: " + newspapers[index][i][1] + " Name of Issue: " + newspapers[index][i][2];
+        } else {
+          return null;
+        }
+      }
+    }
+  };
+}
