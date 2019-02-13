@@ -27,6 +27,7 @@ class parkRideLine {
     let linePosition = findPerson(arr, personName);
     if ( linePosition !== "Person not found" ){
       return arr.splice(linePosition, 1);
+      return arr;
     } else {
       return "Target person does not exist";
     }
