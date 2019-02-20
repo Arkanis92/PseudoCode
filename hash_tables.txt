@@ -18,65 +18,54 @@ Hash tables are better in handling cases in which the name corresponds with a na
 Objects are better with a static number of values of different types.
 
 5. Determine whether you would use a hash table or an object to store each of the following pieces of data:
-A list of pets and their unique names.
-
-  Object - Pets have unique names and the list should be static
-
-
-The name, age, and the birthday of your best friend.
-
-  Object - all static information
-
-
-The name and location of every company in a given city.
-
-  Hash Table - name and location of every company in a city can change often
-
-
-All of the books checked out from a library by a particular individual.
-
-  Hash Table - Depends a bit on how often someone checked out books, but considering it's changing relatively quickly, a hash table might be more suitable.
-
-
-The primary and secondary phone numbers for a contact.
-
-  Object - Though these numbers might change occaisionally, phone numbers generally don't change very often.
-
+  A list of pets and their unique names. - Hash table
+  The name, age, and the birthday of your best friend. - Object
+  The name and location of every company in a given city. - Hash Table
+  All of the books checked out from a library by a particular individual. - Hash Table
+  The primary and secondary phone numbers for a contact. - Object
 
 6. Build a system that allows a sales associate to enter a customer's name, address, and phone number into the system and look up customers using their phone numbers.
 Store this information in a hash table.
 
-function getHash (key, k) {
+let getHash = ( string, max ) => {
   let hash = 0;
-  for ( let i = 0 ; i < key.length ; i++ ) {
-    hash += key.charAt(i);
+  for (let i = 0; i < string.length; i++) {
+    hash += string.charCodeAt(i);
   }
-  return hash % k;
+  return hash % max;
 };
 
-function hashTable () {
+let HashTable = function() {
+
   let storage = [];
-  let storageCap = 999;
+  const storageCap = 999;
 
-  this.add = function (name, address, phone) {
-    let index = getHash(phone, storageCap);
-
+  this.add = function(key,value) {
+    let index = getHash(key, storageCap);
     if ( storage[index] === undefined ) {
-      storage[index] = [ [name, address, phone] ];
+      storage[index] = [ [key,value] ];
+    } else {
+      let added = false;
+      for ( let i = 0 ; i < storage[index].length ; i++ ) {
+        if ( storage[index][i][0] === key ) {
+          storage[index][i][1] = value;
+          added = true;
+        }
+      }
+      if ( added === false ) {
+        storage[index].push([key,value]);
+      }
     }
   };
 
-  this.find = function (phone) {
-    let index = getHash(phone, storageCap);
-
-    if ( storage[index] === undefined ) {
-      return null;
+  this.find = function(key) {
+    let index = getHash(key, storageCap);
+    if (storage[index] === undefined) {
+      return undefined;
     } else {
-      for ( let i = 0 ; i < storage[index].length ; i++ ) {
-        if ( storage[index][i][0] === phone ) {
-          return "Phone Number: " + storage[index][i][0] + " Address: " + storage[index][i][1] + " Name: " + storage[index][i][2];
-        } else {
-          return null;
+      for ( let i = 0 ; i < storage[index].length ; i++) {
+        if ( storage[index][i][0] === key ) {
+          return storage[index][i][1];
         }
       }
     }
@@ -85,37 +74,45 @@ function hashTable () {
 
 7. Build a system that allows a store owner to track their store's inventory using a hash table for storage.
 
-function getHash (key, k) {
+let getHash = ( string, max ) => {
   let hash = 0;
-  for ( let i = 0 ; i < key.length ; i++ ) {
-    hash += key.charAt(i);
+  for (let i = 0; i < string.length; i++) {
+    hash += string.charCodeAt(i);
   }
-  return hash % k;
+  return hash % max;
 };
 
-function hashTable () {
-  let inventory = [];
-  let inventoryCap = 999;
+let HashTable = function() {
 
-  this.add = function (item, quantity) {
-    let index = getHash(item, inventoryCap);
+  let storage = [];
+  const storageCap = 999;
 
-    if ( inventory[index] === undefined ) {
-      inventory[index] = [ [item, quantity] ];
+  this.add = function(key,value) {
+    let index = getHash(key, storageCap);
+    if ( storage[index] === undefined ) {
+      storage[index] = [ [key,value] ];
+    } else {
+      let added = false;
+      for ( let i = 0 ; i < storage[index].length ; i++ ) {
+        if ( storage[index][i][0] === key ) {
+          storage[index][i][1] = value;
+          added = true;
+        }
+      }
+      if ( added === false ) {
+        storage[index].push([key,value]);
+      }
     }
   };
 
-  this.find = function (item) {
-    let index = getHash(item, inventoryCap);
-
-    if ( inventory[index] === undefined ) {
-      return null;
+  this.find = function(key) {
+    let index = getHash(key, storageCap);
+    if (storage[index] === undefined) {
+      return undefined;
     } else {
-      for ( let i = 0 ; i < inventory[index].length ; i++ ) {
-        if ( inventory[index][i][0] === item ) {
-          return "Item Name: " + inventory[index][i][0] + " Quantity: " + inventory[index][i][1];
-        } else {
-          return null;
+      for ( let i = 0 ; i < storage[index].length ; i++) {
+        if ( storage[index][i][0] === key ) {
+          return storage[index][i][1];
         }
       }
     }
@@ -124,68 +121,45 @@ function hashTable () {
 
 8. Build a system that allows digital copies of newspapers to be entered and searched by publisher and publication date. Use hash tables to store the necessary data.
 
-function getHash (key, k) {
+let getHash = ( string, max ) => {
   let hash = 0;
-  for ( let i = 0 ; i < key.length ; i++ ) {
-    hash += key.charAt(i);
+  for (let i = 0; i < string.length; i++) {
+    hash += string.charCodeAt(i);
   }
-  return hash % k;
+  return hash % max;
 };
 
-function hashTablePublisher () {
-  let newspapers = [];
-  let newspapersCap = 999;
+class Newspapers {
+  constructor() {
+    this.storage = [];
+    this.storageCap = 999;
+  }
 
-  this.add = function (publisher, date, name) {
-    let index = getHash(publisher, newspapersCap);
+  addPaper(publisher, publicationDate) {
+    let key = publisher + publicationDate;
+    let index = getHash(key, this.storageCap);
+    let value = [publisher, publicationDate];
 
-    if ( newspapers[index] === undefined ) {
-      newspapers[index] = [ [publisher, date, name] ];
+    if ( this.storage[index] === undefined ) {
+      this.storage[index] = [];
     }
-  };
+    this.storage[index].push(value);
+  }
 
-  this.find = function (publisher) {
-    let index = getHash(publisher, newspapersCap);
+  findPaper(publisher, publicationDate) {
+    let key = publisher + publicationDate;
+    let index = getHash(key, this.storageCap);
+    let result = [];
 
-    if ( newspaper[index] === undefined ) {
-      return null;
-    } else {
-      for ( let i = 0 ; i < newspapers[index].length ; i++ ) {
-        if ( newspapers[index][i][0] === publisher ) {
-          return "Publisher: " + newspapers[index][i][0] + " Date Published: " + newspapers[index][i][1] + " Name of Issue: " + newspapers[index][i][2];
-        } else {
-          return null;
-        }
+    if ( !this.storage[index] ) {
+      console.log('No results found');
+      return;
+    }
+    this.storage[index].forEach( input => {
+      if ( input[0] === publisher && input[1] === publicationDate ) {
+        result.push(input);
       }
-    }
-  };
-}
-
-function hashTableDate () {
-  let newspapers = [];
-  let newspapersCap = 999;
-
-  this.add = function (publisher, date, name) {
-    let index = getHash(date, newspapersCap);
-
-    if ( newspapers[index] === undefined ) {
-      newspapers[index] = [ [publisher, date, name] ];
-    }
-  };
-
-  this.find = function (date) {
-    let index = getHash(date, newspapersCap);
-
-    if ( newspaper[index] === undefined ) {
-      return null;
-    } else {
-      for ( let i = 0 ; i < newspapers[index].length ; i++ ) {
-        if ( newspapers[index][i][1] === date ) {
-          return "Publisher: " + newspapers[index][i][0] + " Date Published: " + newspapers[index][i][1] + " Name of Issue: " + newspapers[index][i][2];
-        } else {
-          return null;
-        }
-      }
-    }
-  };
+    })
+    return result;
+  }
 }
