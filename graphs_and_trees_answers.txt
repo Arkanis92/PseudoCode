@@ -1,0 +1,95 @@
+1. What is a binary tree and what makes it unique to other trees?
+
+A binary tree is a datastructure with two possible "paths" called a left and right child. Each of the child branches can have their own left and right children.
+
+2. What is a heuristic?
+
+A heuristic is a guess that an algorithm makes to solve a potentially complex problem in a timely manner while sacrificing accuracy.
+
+3. What is another problem besides the shortest-path problem that requires the use of heuristics?
+
+Antivirus software. Heuristic scanning searches for code and patterns that are common to a family of viruses. If the scanner finds a file or process that contains matching patterns, then the heuristic scanner
+infers that the file is infected.
+
+4. What is the difference between a depth-first search and a breadth-first search?
+
+Depth-first goes down the tree scanning each node and child node one at a time. It then returns to a parent node if it comes to a dead end and goes down the other child path.
+Breadth-first scans the entire row of nodes before proceeding down the tree. This becomes more intensive over time as more nodes will likely be at the bottom.
+
+5. Explain in your own words what an undirected, a-cyclic, unweighted graph is.
+
+This graph has no specific direction for data to flow in; data can flow any way it chooses. This graph also has a starting and terminal point and does not result in an infinite loop.
+Lastly, it is not more or less difficult to travel down each potential node.
+
+6. What kind of graph is a binary search tree?
+
+Direct, a-cyclic, unweighted graph
+
+//PROGRAMMING QUESTIONS//
+
+1. Given a Binary Search Tree and a value, write a function that checks to see whether the value exists within the tree.
+
+I can use a depth-first search to perform this operation. This will check each node to see if the value is equivalent to the entered value. If the value is equivalent, the function will return that node's value.
+If it is less than the node's value, then it will go down the left child path as all values to the left path are less than the current node's value.
+If the target value is greater than the current node's value, then the function will iterate down the right path since all values on the right path are greater than the current node's value.
+Eventually the function will either find the value and print it out, or it will return null if said value does not exist.
+
+function findValue(number) {
+  let currentNode = this.root;
+  while ( currentNode != null ) {
+    if ( number === currentNode.value ) {
+      return currentNode.value;
+    }
+    else if ( number < currentNode.value ) {
+      currentNode = currentNode.left;
+    } else {
+      currentNode = currentNode.right;
+    }
+  }
+  return null;
+}
+
+2. Given a Binary Search Tree and two nodes, n1 and n2, write a function that finds the distance between the two nodes.
+
+First I need to find the lowest common ancestor between the two selected nodes. Once the lowest common ancestor is found, I then need to find the distance from it to the two target nodes.
+
+
+function findDistance(root, n1, n2) {
+  let common = lowestCommonAncestor(root, n1, n2);
+  let depth1 = findDepth(root, common);
+  let depth2 = findDepth(root, n1);
+  let depth3 = findDepth(root, n2);
+  return depth2 + depth3 - 2 * depth1;
+}
+
+function lowestCommonAncestor(currentNode, n1, n2) {
+  if ( currentNode == null ) {
+    return null;
+  }
+  if ( currentNode == n1 || currentNode == n2 ) {
+    return currentNode;
+  }
+  let left = lowestCommonAncestor( currentNode.left, n1, n2 );
+  let right = lowestCommonAncestor( currentNode.right, n1, n2 );
+
+  if ( left != null && right != null ) {
+    return currentNode;
+  }
+  return left == null ? right : left;
+}
+
+function findDepth(currentNode, targetNode) {
+  if ( currentNode == null ) {
+    return -1;
+  }
+  if ( currentNode == targetNode ) {
+    return 0;
+  }
+  let left = findDepth(currentNode.left, targetNode);
+  let right = findDepth(currentNode.right, targetNode);
+
+  if ( left == -1 && right == -1 ) {
+    return -1;
+  }
+  return left == -1 ? right + 1 : left + 1
+}
