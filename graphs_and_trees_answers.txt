@@ -34,6 +34,7 @@ If it is less than the node's value, then it will go down the left child path as
 If the target value is greater than the current node's value, then the function will iterate down the right path since all values on the right path are greater than the current node's value.
 Eventually the function will either find the value and print it out, or it will return null if said value does not exist.
 
+<<<<<<< HEAD
 function findValue(number) {
   let currentNode = this.root;
   while ( currentNode != null ) {
@@ -92,4 +93,192 @@ function findDepth(currentNode, targetNode) {
     return -1;
   }
   return left == -1 ? right + 1 : left + 1
+=======
+class Node {
+  constructor(data, left = null, right = null) {
+    this.data = data;
+    this.left = left;
+    this.right = right;
+  }
+}
+
+class BinaryTree {
+  constructor() {
+    this.root = null;
+  }
+
+  addNodes(data) {
+    const node = this.root;
+    if ( !node ) {
+      this.root = new Node(data);
+      return;
+    } else {
+      const searchTree = function(node) {
+        if ( data < node.data ) {
+          if ( !node.left ) {
+            node.left = new Node(data);
+            return;
+          }
+          else if ( node.left ) {
+            return searchTree(node.left);
+          }
+        }
+        else if ( data > node.data ) {
+          if ( !node.right ) {
+            node.right = new Node(data);
+            return;
+          }
+          else if ( node.right ) {
+            return searchTree(node.right);
+          }
+        } else {
+          return null;
+        }
+      };
+      return searchTree(node);
+    }
+  }
+
+  findValue(data) {
+    let currentNode = this.root;
+    while ( currentNode != null ) {
+      if ( data === currentNode.data ) {
+        return true;
+      }
+      else if ( data < currentNode.data ) {
+        currentNode = currentNode.left;
+      } else {
+        currentNode = currentNode.right;
+      }
+    }
+    return false;
+  }
+}
+
+
+2. Given a Binary Search Tree and two nodes, n1 and n2, write a function that finds the distance between the two nodes.
+
+First I need to find the lowest common ancestor between the two selected nodes.
+Once the lowest common ancestor is found, I then need to find the distance from it to the two target nodes.
+
+class Node {
+  constructor(data, left = null, right = null) {
+    this.data = data;
+    this.left = left;
+    this.right = right;
+  }
+}
+
+class BinaryTree {
+  constructor() {
+    this.root = null;
+  }
+
+  addNodes(data) {
+    const node = this.root;
+    if ( !node ) {
+      this.root = new Node(data);
+      return;
+    } else {
+      const searchTree = function(node) {
+        if ( data < node.data ) {
+          if ( !node.left ) {
+            node.left = new Node(data);
+            return;
+          }
+          else if ( node.left ) {
+            return searchTree(node.left);
+          }
+        }
+        else if ( data > node.data ) {
+          if ( !node.right ) {
+            node.right = new Node(data);
+            return;
+          }
+          else if ( node.right ) {
+            return searchTree(node.right);
+          }
+        } else {
+          return null;
+        }
+      };
+      return searchTree(node);
+    }
+  }
+
+  findData(data) {
+    let currentNode = this.root;
+    while ( currentNode.data !== data ) {
+      if ( data < currentNode.data ) {
+        currentNode = currentNode.left;
+      } else {
+        currentNode = currentNode.right;
+      }
+      if ( !currentNode ) {
+        return null;
+      }
+    }
+    return currentNode;
+  }
+
+  findValue(data) {
+    let currentNode = this.root;
+    while ( currentNode != null ) {
+      if ( data === currentNode.data ) {
+        return true;
+      }
+      else if ( data < currentNode.data ) {
+        currentNode = currentNode.left;
+      } else {
+        currentNode = currentNode.right;
+      }
+    }
+    return false;
+  }
+
+  findDistance(root, n1, n2) {
+    let common = this.findLowestCommonAncestor(root, n1, n2);
+    let rootToLowestAncestor = this.findDepth(root, common);
+    let node1ToLowestAncestor = this.findDepth(common, n1);
+    let node2ToLowestAncestor = this.findDepth(common, n2);
+    return node1ToLowestAncestor + node2ToLowestAncestor - 2 * rootToLowestAncestor;
+  }
+
+  findLowestCommonAncestor(root, n1, n2) {
+    if ( root == null ) {
+      return;
+    }
+
+    let lowestCommonAncestor = root.data
+    if ( lowestCommonAncestor == n1 || lowestCommonAncestor == n2 ) {
+      return lowestCommonAncestor;
+    }
+
+    if ( n1 < lowestCommonAncestor && n2 < lowestCommonAncestor ) {
+      return this.findLowestCommonAncestor( root.left, n1, n2 );
+    }
+
+    if ( n1 > lowestCommonAncestor && n2 > lowestCommonAncestor ) {
+      return this.findLowestCommonAncestor( root.right, n1, n2 );
+    }
+    return lowestCommonAncestor;
+  }
+
+  findDepth(root, data) {
+    let currentNode = this.root;
+    let count = 0;
+
+    while ( currentNode ) {
+      if ( data === currentNode.data ) {
+        return count;
+      }
+      currentNode = data < currentNode.data ? currentNode.left : currentNode.right;
+      count ++;
+    }
+  }
+
+  getRoot() {
+    return this.root;
+  }
+>>>>>>> trees-and-graphs
 }
