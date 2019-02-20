@@ -9,6 +9,8 @@ Linked lists do not store elements consecutively in memory, so in order to find 
 2. Come up with a real world example of a linked list.
 
 History section of a web browser. As the history of pages you've visited can get quite large, it'd be more practical to use a linked list than an array.
+This works in that each time you visit a new page, a new entry is created and added to the linked list.
+Whenever you hit back or next, you iterate back or forwards one place, which makes this operation ideal for a linked list as you do not need to go to a specific index several lines down.
 
 
 //PROGRAMMING QUESTIONS//
@@ -17,64 +19,115 @@ History section of a web browser. As the history of pages you've visited can get
 Below is pseudocode for a push function for a singly linked list. However, there is something wrong with it.
 Submit both an explanation of the bug and a functional implementation of the method.
 
-The psuedocode looks like it's trying to set multiple head nodes. Head nodes are only in the beginning of the linked list and multiple should not exist.
+The pseudocode is missing a while loop to iterate down the linked list. Without a loop, the linked list has no way of moving from node to node.
+The pseudocode is also not accounting for the fact that the length of the linked list will be expanded each time a new element is pushed.
 
-LinkedList.prototype.push = function(element) {
-  let node = new Node(element);
-  currentNode = this.head;
-
-  if(!currentNode) {
-    this.head = node;
-    return node;
-  } else {
-    currentNode.next = node;
-    return node;
+LinkedList.prototype.push = function(element){
+  let node = {
+    value: element,
+    next: null
   }
+
+  if( !this.head ){
+    this.head = node;
+  } else {
+    currentNode = this.head;
+    while( currentNode.next ){
+      currentNode = currentNode.next;
+    }
+    currentNode.next = node;
+  }
+  this.length ++;
+  return node;
 }
 
 
 
 2. Given an unsorted singly linked list, remove all duplicates from the linked list.
 
-function LinkedList () {
+function LinkedList(){
   this.head = null;
+  this.length = 0;
 }
 
-LinkedList.prototype.removeDuplicates = function () {
-  if ( !this.head || !this.head.next ) {
-    return;
+LinkedList.prototype.push = function(element){
+  let node = {
+    value: element,
+    next: null
   }
 
-  let nodeHead = "";
-  let nodeNext = "";
-  let nodes = {};
-
-  nodeHead = this.head;
-  nodeNext = nodeNext.next;
-  nodes[nodeHead.data] = true;
-
-  while (nodeNext) {
-    let data = nodeNext.data;
-    if ( nodes[data] ) {
-      nodeHead.next = nodeNext.next;
-    } else {
-      nodes[data] = true;
-      nodeHead = nodeNext;
+  if( !this.head ){
+    this.head = node;
+  } else {
+    currentNode = this.head;
+    while( currentNode.next ){
+      currentNode = currentNode.next;
     }
-    nodeNext = nodeNext.next;
+    currentNode.next = node;
   }
+  this.length ++;
+  return node;
+}
+
+LinkedList.prototype.removeDuplicates = function(){
+ if (!this.head || !this.head.next) {
+   return;
+   console.log("There are no duplicates");
+  }
+
+  let currentNode = this.head;
+  while (currentNode != null) {
+    let previousNode = currentNode;
+    let nextNode = currentNode.next;
+    while (nextNode != null) {
+      if (currentNode.value == nextNode.value) {
+        previousNode.next = nextNode.next;
+        this.length --;
+      } else {
+        previousNode = nextNode;
+      }
+      nextNode = nextNode.next;
+    }
+    currentNode = currentNode.next;
+  }
+  return this;
 }
 
 
 
 3. Given an unsorted singly linked list, reverse it.
 
-LinkedList.prototype.reverse = function(head) {
-  if ( !head || !head.next ) {
-    return head;
+function LinkedList(){
+  this.head = null;
+  this.length = 0;
+}
+
+LinkedList.prototype.push = function(element){
+  let node = {
+    value: element,
+    next: null
   }
-  let temp = reverse( head.next );
-  head.next.next = head;
-  head.next = undefined;
-  return temp;
+
+  if( !this.head ){
+    this.head = node;
+  } else {
+    currentNode = this.head;
+    while( currentNode.next ){
+      currentNode = currentNode.next;
+    }
+    currentNode.next = node;
+  }
+  this.length ++;
+  return node;
+}
+
+LinkedList.prototype.reverse = function() {
+  let currentNode = this.head;
+  while ( currentNode ) {
+    let nextNode = currentNode.next;
+    currentNode.next = previousNode;
+    previousNode = currentNode;
+    currentNode = nextNode;
+  }
+  return previousNode;
 }
