@@ -123,6 +123,7 @@ LinkedList.prototype.push = function(element){
 
 LinkedList.prototype.reverse = function() {
   let currentNode = this.head;
+  let previousNode = null;
   while ( currentNode ) {
     let nextNode = currentNode.next;
     currentNode.next = previousNode;
@@ -131,3 +132,11 @@ LinkedList.prototype.reverse = function() {
   }
   return previousNode;
 }
+
+let newList = new LinkedList();
+newList.push(1);
+newList.push(2);
+newList.push(3);
+newList.push(4);
+newList.push(5);
+console.log(newList.reverse());
