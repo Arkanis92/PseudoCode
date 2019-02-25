@@ -156,6 +156,7 @@ class Newspapers {
     }
     this.storage[index].forEach( input => {
       if ( input.publisher === paper.publisher && input.date === paper.date ) {
+        result.push(input);
       }
     });
     return result;
