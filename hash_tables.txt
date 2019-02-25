@@ -135,19 +135,18 @@ class Newspapers {
     this.storageCap = 999;
   }
 
-  addPaper(publisher, publicationDate) {
-    let key = publisher + publicationDate;
+  addPaper(paper) {
+    let key = paper.publisher + paper.date;
     let index = getHash(key, this.storageCap);
-    let value = [publisher, publicationDate];
 
     if ( this.storage[index] === undefined ) {
       this.storage[index] = [];
     }
-    this.storage[index].push(value);
+    this.storage[index].push(paper);
   }
 
-  findPaper(publisher, publicationDate) {
-    let key = publisher + publicationDate;
+  findPaper(paper) {
+    let key = paper.publisher + paper.date;
     let index = getHash(key, this.storageCap);
     let result = [];
 
@@ -156,10 +155,9 @@ class Newspapers {
       return;
     }
     this.storage[index].forEach( input => {
-      if ( input[0] === publisher && input[1] === publicationDate ) {
-        result.push(input);
+      if ( input.publisher === paper.publisher && input.date === paper.date ) {
       }
-    })
+    });
     return result;
   }
 }
