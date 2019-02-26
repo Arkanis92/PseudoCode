@@ -136,29 +136,38 @@ class Newspapers {
   }
 
   addPaper(paper) {
-    let key = paper.publisher + paper.date;
-    let index = getHash(key, this.storageCap);
-
-    if ( this.storage[index] === undefined ) {
-      this.storage[index] = [];
+    if ( !paper.hasOwnProperty('publisher') || paper.hasOwnProperty('date') || paper.hasOwnProperty('paper') ) {
+      console.log("All entries must have a 'publisher' and 'date' value, as well as text for the 'paper'.");
+      return false;
+    } else {
+      let key = paper.publisher + paper.date;
+      let index = getHash(key, this.storageCap);
+      if ( this.storage[index] === undefined ) {
+        this.storage[index] = [];
+      }
+      this.storage[index].push(paper);
     }
-    this.storage[index].push(paper);
   }
 
-  findPaper(paper) {
-    let key = paper.publisher + paper.date;
-    let index = getHash(key, this.storageCap);
-    let result = [];
+  findPaper( paper ) {
+    if ( !paper.hasOwnProperty('publisher') || paper.hasOwnProperty('date') || paper.hasOwnProperty('paper') ) {
+      console.log("All entries must have a 'publisher' and 'date' value, as well as text for the 'paper'.");
+      return false;
+    } else {
+      let key = paper.publisher + paper.date;
+      let index = gethash(key, this.storageCap);
+      let result = [];
 
-    if ( !this.storage[index] ) {
-      console.log('No results found');
-      return;
-    }
-    this.storage[index].forEach( input => {
-      if ( input.publisher === paper.publisher && input.date === paper.date ) {
-        result.push(input);
+      if ( !this.storage[index] ) {
+        console.log('No results found.');
+        return;
       }
-    });
-    return result;
+      this.storage[index].forEach( input => {
+        if ( input.publisher === paper.publisher && input.date === paper.date ) {
+          result.push(input);
+        }
+      })
+      return result;
+    }
   }
 }
