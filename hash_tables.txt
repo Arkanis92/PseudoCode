@@ -35,42 +35,60 @@ let getHash = ( string, max ) => {
   return hash % max;
 };
 
-let HashTable = function() {
+class Database {
+  constructor() {
+    this.storage = [];
+    this.storageCap = 20;
+  }
 
-  let storage = [];
-  const storageCap = 999;
-
-  this.add = function(key,value) {
-    let index = getHash(key, storageCap);
-    if ( storage[index] === undefined ) {
-      storage[index] = [ [key,value] ];
+  add(obj) {
+    if ( !obj.hasOwnProperty('name') || !obj.hasOwnProperty('address') || !obj.hasOwnProperty('phone') ) {
+      console.log("Entries must have a 'phone' value as well as text for 'name' and 'address'.");
+      return false;
     } else {
-      let added = false;
-      for ( let i = 0 ; i < storage[index].length ; i++ ) {
-        if ( storage[index][i][0] === key ) {
-          storage[index][i][1] = value;
-          added = true;
-        }
+      let key = obj.phone;
+      let index = getHash(key, this.storageCap);
+      if ( this.storage[index] === undefined ) {
+        this.storage[index] = [];
       }
-      if ( added === false ) {
-        storage[index].push([key,value]);
-      }
+      this.storage[index].push(obj);
     }
-  };
+  }
 
-  this.find = function(key) {
-    let index = getHash(key, storageCap);
-    if (storage[index] === undefined) {
-      return undefined;
-    } else {
-      for ( let i = 0 ; i < storage[index].length ; i++) {
-        if ( storage[index][i][0] === key ) {
-          return storage[index][i][1];
-        }
-      }
+  find(obj) {
+    let key = obj.phone;
+    let index = getHash(key, this.storageCap);
+    let result = [];
+
+    if ( !this.storage[index] ) {
+      console.log('No results.');
+      return;
     }
-  };
+    this.storage[index].forEach( input => {
+      if ( input.phone === obj.phone ) {
+        result.push(input);
+      }
+    })
+    return result;
+  }
 }
+
+let book = new Database();
+
+book.add({
+  name: 'John Wick',
+  address: '21 Avery RD',
+  phone: '123-456-7890'
+})
+book.add({
+  name: 'Jack Smith',
+  address: '31 Yreva RD',
+  phone: '098-765-4321'
+})
+
+console.log(book.find({
+  phone: '123-456-7890'
+}))
 
 7. Build a system that allows a store owner to track their store's inventory using a hash table for storage.
 
@@ -82,42 +100,59 @@ let getHash = ( string, max ) => {
   return hash % max;
 };
 
-let HashTable = function() {
+class Inventory {
+  constructor() {
+    this.storage = [];
+    this.storageCap = 20;
+  }
 
-  let storage = [];
-  const storageCap = 999;
-
-  this.add = function(key,value) {
-    let index = getHash(key, storageCap);
-    if ( storage[index] === undefined ) {
-      storage[index] = [ [key,value] ];
+  add(obj) {
+    if ( !obj.hasOwnProperty('item') || !obj.hasOwnProperty('quantity') ) {
+      console.log("Entries must have a 'item' value as well as text for 'quantity'.");
+      return false;
     } else {
-      let added = false;
-      for ( let i = 0 ; i < storage[index].length ; i++ ) {
-        if ( storage[index][i][0] === key ) {
-          storage[index][i][1] = value;
-          added = true;
-        }
+      let key = obj.item;
+      let index = getHash(key, this.storageCap);
+      if ( this.storage[index] === undefined ) {
+        this.storage[index] = [];
       }
-      if ( added === false ) {
-        storage[index].push([key,value]);
-      }
+      this.storage[index].push(obj);
     }
-  };
+  }
 
-  this.find = function(key) {
-    let index = getHash(key, storageCap);
-    if (storage[index] === undefined) {
-      return undefined;
-    } else {
-      for ( let i = 0 ; i < storage[index].length ; i++) {
-        if ( storage[index][i][0] === key ) {
-          return storage[index][i][1];
-        }
-      }
+  find(obj) {
+    let key = obj.item;
+    let index = getHash(key, this.storageCap);
+    let result = [];
+
+    if ( !this.storage[index] ) {
+      console.log('No results.');
+      return;
     }
-  };
+    this.storage[index].forEach( input => {
+      if ( input.item === obj.item ) {
+        result.push(input);
+      }
+    })
+    return result;
+  }
 }
+
+let list = new Inventory();
+
+list.add({
+  item: 'Books',
+  quantity: '30'
+});
+
+list.add({
+  item: 'Pictures',
+  quantity: '50'
+});
+
+console.log(list.find({
+  item: 'Pictures'
+}));
 
 8. Build a system that allows digital copies of newspapers to be entered and searched by publisher and publication date. Use hash tables to store the necessary data.
 
@@ -132,11 +167,11 @@ let getHash = ( string, max ) => {
 class Newspapers {
   constructor() {
     this.storage = [];
-    this.storageCap = 999;
+    this.storageCap = 20;
   }
 
   addPaper(paper) {
-    if ( !paper.hasOwnProperty('publisher') || paper.hasOwnProperty('date') || paper.hasOwnProperty('paper') ) {
+    if ( !paper.hasOwnProperty('publisher') || !paper.hasOwnProperty('date') || !paper.hasOwnProperty('paper') ) {
       console.log("All entries must have a 'publisher' and 'date' value, as well as text for the 'paper'.");
       return false;
     } else {
@@ -150,24 +185,31 @@ class Newspapers {
   }
 
   findPaper( paper ) {
-    if ( !paper.hasOwnProperty('publisher') || paper.hasOwnProperty('date') || paper.hasOwnProperty('paper') ) {
-      console.log("All entries must have a 'publisher' and 'date' value, as well as text for the 'paper'.");
-      return false;
-    } else {
-      let key = paper.publisher + paper.date;
-      let index = gethash(key, this.storageCap);
-      let result = [];
+    let key = paper.publisher + paper.date;
+    let index = getHash(key, this.storageCap);
+    let result = [];
 
-      if ( !this.storage[index] ) {
-        console.log('No results found.');
-        return;
-      }
-      this.storage[index].forEach( input => {
-        if ( input.publisher === paper.publisher && input.date === paper.date ) {
-          result.push(input);
-        }
-      })
-      return result;
+    if ( !this.storage[index] ) {
+      console.log('No results found.');
+      return;
     }
+    this.storage[index].forEach( input => {
+      if ( input.publisher === paper.publisher && input.date === paper.date ) {
+        result.push(input);
+      }
+    })
+    return result;
   }
 }
+
+let newspaper = new Newspapers();
+newspaper.addPaper({
+  publisher: 'LV Review Journal',
+  date: '09-25-1993',
+  paper: 'Heavy Traffic due to major road work'
+});
+
+console.log(newspaper.findPaper({
+  publisher: 'LV Review Journal',
+  date: '09-25-1993'
+}));
