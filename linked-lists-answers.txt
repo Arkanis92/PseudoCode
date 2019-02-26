@@ -1,3 +1,5 @@
+//Exercises//
+
 1. What are some pros and cons of using linked lists instead of arrays?
 
 PROS - Much less "expensive" than arrays as it does not store the memory address of each element consecutively and therefore, the OS can throw the elements anywhere that's free in its memory.
